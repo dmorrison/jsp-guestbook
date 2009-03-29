@@ -47,7 +47,7 @@ if (request.getParameter("register") != null) {
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <title>COMP 6006 Guestbook</title>
+        <title>COMP 6006 Guestbook - Register</title>
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <link href="styles.css" rel="stylesheet" type="text/css" />
@@ -97,16 +97,39 @@ if (request.getParameter("register") != null) {
                 <div id="page">
                     <div id="content">
                         <form action="register.jsp" method="post">
-                            <label for="username">Username:</label>
-                            <input type="text" name="username" id="username" />
-                            <label for="password">Password:</label>
-                            <input type="password" name="password" id="password" />
-                            <label for="password">Confirm Password:</label>
-                            <input type="password" name="confirmPassword"
-                                id="confirmPassword" />
-
-                            <input type="submit" name="register" id="register"
-                                value="Register" />
+                            <table>
+                                <tr>
+                                    <td>
+                                        <label for="username">Username:</label>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="username" id="username" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label for="password">Password:</label>
+                                    </td>
+                                    <td>
+                                        <input type="password" name="password" id="password" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label for="password">Confirm Password:</label>
+                                    </td>
+                                    <td>
+                                        <input type="password" name="confirmPassword"
+                                            id="confirmPassword" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <input type="submit" name="register" id="register"
+                                            value="Register" />
+                                    </td>
+                                </tr>
+                            </table>
                         </form>
                     </div>
                 </div>
