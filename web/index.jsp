@@ -13,7 +13,6 @@ if (session.getAttribute("status") != null) {
 }
 
 Repository repo = new Repository(application);
-List<Post> posts = repo.getPosts();
 
 // Handle log in.
 String username = request.getParameter("username");
@@ -37,8 +36,12 @@ if (request.getParameter("logOut") != null) {
 
 // Handle create new message.
 if (request.getParameter("message") != null) {
-    repo.createPost(1, request.getParameter("message"));
+    User user = repo.getUser(session.getAttribute("username").toString());
+    repo.createPost(user.getId(), request.getParameter("message"));
 }
+
+// Get all posts.
+List<Post> posts = repo.getPosts();
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"

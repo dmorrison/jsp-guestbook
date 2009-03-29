@@ -39,6 +39,27 @@ public class Repository {
         return users;
     }
 
+    public User getUser(String username) throws ClassNotFoundException, SQLException {
+        User user = new User();
+
+        Class.forName("org.sqlite.JDBC");
+        String dbpath = application.getRealPath("guestbook.sqlite");
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbpath);
+        Statement stat = conn.createStatement();
+
+        ResultSet rs = stat.executeQuery(
+                "select * from users where username='" + username + "';");
+        rs.next();
+        user.setId(Integer.parseInt(rs.getString("id")));
+        user.setUsername(rs.getString("username"));
+        user.setPassword(rs.getString("password"));
+        rs.close();
+
+        conn.close();
+
+        return user;
+    }
+
     public void createUser(String username, String password) throws ClassNotFoundException, SQLException {
         Class.forName("org.sqlite.JDBC");
         String dbpath = application.getRealPath("guestbook.sqlite");
