@@ -82,7 +82,7 @@ if (request.getParameter("message") != null) {
 
                 <div id="header">
                     <div id="logo">
-                        <h1>COMP 6006 Guestbook</h1>
+                        <h1><a href="index.jsp">COMP 6006 Guestbook</a></h1>
                     </div>
                 </div>
 
