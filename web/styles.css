@@ -98,7 +98,7 @@ background: #E4F9D1;
 	height: 113px;
 }
 
-#menu {
+#logInWrap {
 	height: 38px;
 	margin: 0 auto;
 	width: 798px;
@@ -107,30 +107,20 @@ background: #E4F9D1;
 	color: #ffffff;
 }
 
-#menu2 {
+#logInWrap2 {
     padding: 10px 10px 0 10px;
 }
 
-#menu #userInfo {
+#logInWrap #left {
     float: left;
 }
 
-#menu #buttons {
+#logInWrap #right {
     float: right;
 }
 
-#menu a {
-	display: block;
-	float: left;
-	height: 28px;
-	width: 100px;
-	text-decoration: none;
-	font-size: 14px;
-	padding-top: 10px;
-	font-weight: bold;
-	color: #ffffff;
-    text-align: center;
-
+#logInWrap a {
+    color: #ffffff;
 }
 
 /* Logo */

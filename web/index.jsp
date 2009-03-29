@@ -1,3 +1,13 @@
+<%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ page import="java.util.*" %>
+<%@ page import="org.*" %>
+
+<%
+    Repository repo = new Repository(application);
+    List<Post> posts = repo.getPosts();
+    String stop = "Stop!";
+%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -12,17 +22,19 @@
     <body>        
         <div id="contmain">
             
-            <div id="menu"><div id="menu2">
-                <div id="userInfo">
-                    Username
-                    <input type="text" id="username" name="username" />
-                    Password
-                    <input type="password" id="password" name="password" />
-                </div>
-                <div id="buttons">
-                    <input type="button" value="Log In" id="logIn" />
-                    <input type="button" value="Register" id="register" />
-                </div>
+            <div id="logInWrap"><div id="logInWrap2">
+                <form action="index.jsp" method="post">
+                    <div id="left">
+                        Username
+                        <input type="text" id="username" name="username" />
+                        Password
+                        <input type="password" id="password" name="password" />
+                        <input type="submit" value="Log In" id="logIn" />
+                    </div>
+                    <div id="right">
+                        <a href="#">Register</a>
+                    </div>
+                </form>
             </div></div>
 
             <div id="main">
@@ -37,6 +49,8 @@
                     <div id="content">
                         <div class="box"><div class="box2">
                             <h4><a href="#">Welcome To Our Website</a></h4><br />
+                            <p><%= new AccountManager().getMessage() %></p>
+                            <p><%= posts.get(0).getMessage() %></p>
                             <p>This website template is released under  a Creative Commons Attribution 2.5 License</p>
                             <p>We request you retain the full copyright notice below including the link to www.metamorphozis.com.<br />
                                 This not only gives respect to the large amount of time given freely by the developers
