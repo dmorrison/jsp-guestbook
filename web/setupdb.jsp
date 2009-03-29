@@ -9,10 +9,18 @@
         Statement stat = conn.createStatement();
 
         stat.executeUpdate("drop table if exists users;");
-        stat.executeUpdate("create table users (username, password);");
+        stat.executeUpdate(
+                "create table users (" +
+                    "id integer primary key, " +
+                    "username, " +
+                    "password);");
 
-        stat.executeUpdate("insert into users values ('dsmith', 'password');");
-        stat.executeUpdate("insert into users values ('jarnold', 'password');");
+        stat.executeUpdate("insert into users " +
+                           "(username, password) values " +
+                           "('dsmith', 'password');");
+        stat.executeUpdate("insert into users " +
+                           "(username, password) values " +
+                           "('jarnold', 'password');");
 
         stat.executeUpdate("drop table if exists posts;");
         stat.executeUpdate(

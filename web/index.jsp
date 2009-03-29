@@ -4,13 +4,30 @@
 <%@ page import="org.*" %>
 
 <%
-Repository repo = new Repository(application);
+String error = "";
 
+Repository repo = new Repository(application);
+List<Post> posts = repo.getPosts();
+
+// Handle login.
+String username = request.getParameter("username");
+String password = request.getParameter("password");
+if (username != null && password != null) {
+    List<User> users = repo.getUsers();
+    for (User u : users) {
+        if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
+            session.setAttribute("username", username);
+        }
+    }
+    if (session.getAttribute("username") == null) {
+        error = "Invalid username or password.";
+    }
+}
+
+// Handle create new message.
 if (request.getParameter("message") != null) {
     repo.createPost(1, request.getParameter("message"));
 }
-
-List<Post> posts = repo.getPosts();
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -27,19 +44,26 @@ List<Post> posts = repo.getPosts();
     <body>        
         <div id="contmain">
             
-            <div id="logInWrap"><div id="logInWrap2">
-                <form action="index.jsp" method="post">
-                    <div id="left">
-                        Username
+            <div id="account"><div id="account2">
+                <div id="logIn">
+                    <% if (session.getAttribute("username") == null) { %>
+                    <form action="index.jsp" method="post">
+                        <label for="username">Username</label>
                         <input type="text" id="username" name="username" />
-                        Password
+                        <label for="password">Password</label>
                         <input type="password" id="password" name="password" />
-                        <input type="submit" value="Log In" id="logIn" />
-                    </div>
-                    <div id="right">
-                        <a href="#">Register</a>
-                    </div>
-                </form>
+                        <input type="submit" value="Log In" id="logInButton" name="logInButton" />
+                    </form>
+                    <% } else { %>
+                    Welcome <%= session.getAttribute("username") %>
+                    <% } %>
+                </div>
+                <div id="error">
+                    <%= error %>
+                </div>
+                <div id="registerLogOut">
+                    <a href="#">Register</a>
+                </div>
             </div></div>
 
             <div id="main">
@@ -68,11 +92,10 @@ List<Post> posts = repo.getPosts();
                         <% } %>
 
                         <div class="box"><div class="box2">
-                            <h4>Post a Message</h4>
+                            <h4>Post a Message</h4><br />
                             <form action="index.jsp" method="post">
                                 <textarea name="message" id="message"
-                                          cols="100" rows="10">
-                                </textarea>
+                                    cols="100" rows="10"></textarea><br />
                                 <input type="submit" value="Post Message" />
                             </form>
                         </div></div>

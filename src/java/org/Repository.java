@@ -14,6 +14,31 @@ public class Repository {
         this.application = application;
     }
 
+    public List<User> getUsers() throws ClassNotFoundException, SQLException, ParseException {
+        Vector<User> users = new Vector<User>();
+
+        Class.forName("org.sqlite.JDBC");
+        String dbpath = application.getRealPath("guestbook.sqlite");
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbpath);
+        Statement stat = conn.createStatement();
+
+        ResultSet rs = stat.executeQuery("select * from users;");
+        while (rs.next()) {
+            User user = new User();
+
+            user.setId(Integer.parseInt(rs.getString("id")));
+            user.setUsername(rs.getString("username"));
+            user.setPassword(rs.getString("password"));
+
+            users.add(user);
+        }
+        rs.close();
+
+        conn.close();
+
+        return users;
+    }
+
     public List<Post> getPosts() throws SQLException, ClassNotFoundException, ParseException {
         Vector<Post> posts = new Vector<Post>();
 
