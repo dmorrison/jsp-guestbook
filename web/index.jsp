@@ -9,7 +9,7 @@ String error = "";
 Repository repo = new Repository(application);
 List<Post> posts = repo.getPosts();
 
-// Handle login.
+// Handle log in.
 String username = request.getParameter("username");
 String password = request.getParameter("password");
 if (username != null && password != null) {
@@ -22,6 +22,11 @@ if (username != null && password != null) {
     if (session.getAttribute("username") == null) {
         error = "Invalid username or password.";
     }
+}
+
+// Handle log out.
+if (request.getParameter("logOut") != null) {
+    session.removeAttribute("username");
 }
 
 // Handle create new message.
@@ -62,7 +67,14 @@ if (request.getParameter("message") != null) {
                     <%= error %>
                 </div>
                 <div id="registerLogOut">
+                    <% if (session.getAttribute("username") == null) { %>
                     <a href="#">Register</a>
+                    <% } else { %>
+                    <form action="index.jsp" method="post">
+                        <input type="submit" value="Log Out"
+                            name="logOut" id="logOut" />
+                    </form>
+                    <% } %>
                 </div>
             </div></div>
 
@@ -91,6 +103,7 @@ if (request.getParameter("message") != null) {
                             <p>No messages have been posted yet.</p>
                         <% } %>
 
+                        <% if (session.getAttribute("username") != null) { %>
                         <div class="box"><div class="box2">
                             <h4>Post a Message</h4><br />
                             <form action="index.jsp" method="post">
@@ -99,6 +112,7 @@ if (request.getParameter("message") != null) {
                                 <input type="submit" value="Post Message" />
                             </form>
                         </div></div>
+                        <% } %>
                     </div>
                 </div>
                 
