@@ -39,6 +39,19 @@ public class Repository {
         return users;
     }
 
+    public void createUser(String username, String password) throws ClassNotFoundException, SQLException {
+        Class.forName("org.sqlite.JDBC");
+        String dbpath = application.getRealPath("guestbook.sqlite");
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbpath);
+        Statement stat = conn.createStatement();
+
+        stat.executeUpdate("insert into users " +
+                          "(username, password) values " +
+                          "('" + username + "', '" + password + "');");
+
+        conn.close();
+    }
+
     public List<Post> getPosts() throws SQLException, ClassNotFoundException, ParseException {
         Vector<Post> posts = new Vector<Post>();
 

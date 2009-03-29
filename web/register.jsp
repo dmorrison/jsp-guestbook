@@ -1,7 +1,6 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
-<%@ page import="java.text.*" %>
-<%@ page import="java.util.*" %>
 <%@ page import="org.*" %>
+<%@ page import="java.util.*" %>
 
 <%
 String error = "";
@@ -12,32 +11,34 @@ if (session.getAttribute("status") != null) {
     session.removeAttribute("status");
 }
 
-Repository repo = new Repository(application);
-List<Post> posts = repo.getPosts();
+if (request.getParameter("register") != null) {
+    String username = request.getParameter("username");
+    String password = request.getParameter("password");
+    String confirmPassword = request.getParameter("confirmPassword");
 
-// Handle log in.
-String username = request.getParameter("username");
-String password = request.getParameter("password");
-if (username != null && password != null) {
-    List<User> users = repo.getUsers();
-    for (User u : users) {
-        if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
-            session.setAttribute("username", username);
+    if (username.equals("") || password.equals("") || confirmPassword.equals("")) {
+        error = "Please enter all fields.";
+    } else if (!password.equals(confirmPassword)) {
+        error = "Passwords do not match.";
+    } else {
+        // Check if username already exists.
+        Repository repo = new Repository(application);
+        List<User> users = repo.getUsers();
+        boolean usernameExists = false;
+        for (User u : users) {
+            if (u.getUsername().equals(username)) {
+                usernameExists = true;
+            }
+        }
+
+        if (usernameExists) {
+            error = "Username already exists.";
+        } else {
+            repo.createUser(username, password);
+            session.setAttribute("status", "Account created.");
+            response.sendRedirect("index.jsp");
         }
     }
-    if (session.getAttribute("username") == null) {
-        error = "Invalid username or password.";
-    }
-}
-
-// Handle log out.
-if (request.getParameter("logOut") != null) {
-    session.removeAttribute("username");
-}
-
-// Handle create new message.
-if (request.getParameter("message") != null) {
-    repo.createPost(1, request.getParameter("message"));
 }
 %>
 
@@ -95,31 +96,18 @@ if (request.getParameter("message") != null) {
 
                 <div id="page">
                     <div id="content">
-                        <% for (Post post : posts) { %>
-                            <div class="box"><div class="box2">
-                                <h4><%= post.getUsername() %></h4><br />
-                                <p><%= post.getMessage() %></p>
-                                <p class="date">
-                                    <img src="images/timeicon.gif" alt="Clock Icon" />                                    
-                                    <%= new SimpleDateFormat("MMMM d, yyyy h:mm a").format(post.getTimestamp()) %>
-                                </p>
-                            </div></div>
-                        <% } %>
+                        <form action="register.jsp" method="post">
+                            <label for="username">Username:</label>
+                            <input type="text" name="username" id="username" />
+                            <label for="password">Password:</label>
+                            <input type="password" name="password" id="password" />
+                            <label for="password">Confirm Password:</label>
+                            <input type="password" name="confirmPassword"
+                                id="confirmPassword" />
 
-                        <% if (posts.isEmpty()) { %>
-                            <p>No messages have been posted yet.</p>
-                        <% } %>
-
-                        <% if (session.getAttribute("username") != null) { %>
-                        <div class="box"><div class="box2">
-                            <h4>Post a Message</h4><br />
-                            <form action="index.jsp" method="post">
-                                <textarea name="message" id="message"
-                                    cols="100" rows="10"></textarea><br />
-                                <input type="submit" value="Post Message" />
-                            </form>
-                        </div></div>
-                        <% } %>
+                            <input type="submit" name="register" id="register"
+                                value="Register" />
+                        </form>
                     </div>
                 </div>
                 

@@ -114,10 +114,17 @@ h1 a:hover, h2 a:hover, h3 a:hover {
     float: left;
 }
 
-#account #error {
+#account #messages {
     float: left;
     padding: 2px 0 0 10px;
+}
+
+#account #messages .error {
     color: Red;
+}
+
+#account #messages .status {
+    color: Yellow;
 }
 
 #account #registerLogOut {
