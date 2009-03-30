@@ -5,21 +5,19 @@ import java.text.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
-import javax.servlet.ServletContext;
 
 public class Repository {
-    private ServletContext application;
+    private String dbPath;
 
-    public Repository(ServletContext application) {
-        this.application = application;
+    public Repository(String dbPath) {
+        this.dbPath = dbPath;
     }
 
     public List<User> getUsers() throws ClassNotFoundException, SQLException, ParseException {
         Vector<User> users = new Vector<User>();
 
         Class.forName("org.sqlite.JDBC");
-        String dbpath = application.getRealPath("guestbook.sqlite");
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbpath);
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
         Statement stat = conn.createStatement();
 
         ResultSet rs = stat.executeQuery("select * from users;");
@@ -43,8 +41,7 @@ public class Repository {
         User user = new User();
 
         Class.forName("org.sqlite.JDBC");
-        String dbpath = application.getRealPath("guestbook.sqlite");
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbpath);
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
         Statement stat = conn.createStatement();
 
         ResultSet rs = stat.executeQuery(
@@ -62,8 +59,7 @@ public class Repository {
 
     public void createUser(String username, String password) throws ClassNotFoundException, SQLException {
         Class.forName("org.sqlite.JDBC");
-        String dbpath = application.getRealPath("guestbook.sqlite");
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbpath);
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
         Statement stat = conn.createStatement();
 
         stat.executeUpdate("insert into users " +
@@ -77,8 +73,7 @@ public class Repository {
         Vector<Post> posts = new Vector<Post>();
 
         Class.forName("org.sqlite.JDBC");
-        String dbpath = application.getRealPath("guestbook.sqlite");
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbpath);
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
         Statement stat = conn.createStatement();
 
         ResultSet rs = stat.executeQuery(
@@ -108,8 +103,7 @@ public class Repository {
 
     public void createPost(int userId, String message) throws ClassNotFoundException, SQLException, SQLException {
         Class.forName("org.sqlite.JDBC");
-        String dbpath = application.getRealPath("guestbook.sqlite");
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbpath);
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
         Statement stat = conn.createStatement();
 
         stat.executeUpdate("insert into posts " +

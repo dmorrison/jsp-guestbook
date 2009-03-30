@@ -5,6 +5,10 @@
 
 <%
 String error = "";
+if (session.getAttribute("error") != null) {
+    error = session.getAttribute("error").toString();
+    session.removeAttribute("error");
+}
 
 String status = "";
 if (session.getAttribute("status") != null) {
@@ -12,35 +16,8 @@ if (session.getAttribute("status") != null) {
     session.removeAttribute("status");
 }
 
-Repository repo = new Repository(application);
-
-// Handle log in.
-String username = request.getParameter("username");
-String password = request.getParameter("password");
-if (username != null && password != null) {
-    List<User> users = repo.getUsers();
-    for (User u : users) {
-        if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
-            session.setAttribute("username", username);
-        }
-    }
-    if (session.getAttribute("username") == null) {
-        error = "Invalid username or password.";
-    }
-}
-
-// Handle log out.
-if (request.getParameter("logOut") != null) {
-    session.removeAttribute("username");
-}
-
-// Handle create new message.
-if (request.getParameter("message") != null) {
-    User user = repo.getUser(session.getAttribute("username").toString());
-    repo.createPost(user.getId(), request.getParameter("message"));
-}
-
 // Get all posts.
+Repository repo = new Repository(application.getRealPath("guestbook.sqlite"));
 List<Post> posts = repo.getPosts();
 %>
 
@@ -61,7 +38,7 @@ List<Post> posts = repo.getPosts();
             <div id="account"><div id="account2">
                 <div id="logIn">
                     <% if (session.getAttribute("username") == null) { %>
-                    <form action="index.jsp" method="post">
+                    <form action="accountmanager" method="post">
                         <label for="username">Username</label>
                         <input type="text" id="username" name="username" />
                         <label for="password">Password</label>
@@ -80,7 +57,7 @@ List<Post> posts = repo.getPosts();
                     <% if (session.getAttribute("username") == null) { %>
                     <a href="register.jsp">Register</a>
                     <% } else { %>
-                    <form action="index.jsp" method="post">
+                    <form action="accountmanager" method="post">
                         <input type="submit" value="Log Out"
                             name="logOut" id="logOut" />
                     </form>
@@ -116,7 +93,7 @@ List<Post> posts = repo.getPosts();
                         <% if (session.getAttribute("username") != null) { %>
                         <div class="box"><div class="box2">
                             <h4>Post a Message</h4><br />
-                            <form action="index.jsp" method="post">
+                            <form action="postmanager" method="post">
                                 <textarea name="message" id="message"
                                     cols="100" rows="10"></textarea><br />
                                 <input type="submit" value="Post Message" />
